@@ -77,7 +77,7 @@ public class Weapon : MonoBehaviour {
                 cameraAngle.x = cameraAngle.x - 360.0f;
                 transform.localRotation = Quaternion.Euler(cameraAngle.x, 0, 0);
             }
-            Debug.Log(cameraAngle.x);
+            //Debug.Log(cameraAngle.x);
             
             //Quaternion.Euler(collectDir);
             //Debug.Log(cameraAngle);
@@ -107,11 +107,24 @@ public class Weapon : MonoBehaviour {
             gameObject.transform.Translate(-1 * firedir.normalized * firespeed * Time.deltaTime);
             if (transform.localPosition.z < 1f)
             {
-                transform.localPosition = new Vector3(0f, 0f, 0.3f);
+                transform.localPosition = new Vector3(0.3f, 0f, 0.3f);
                 weaponState = WeaponState.CanFire;
             }
         }
     }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        if(weaponState == WeaponState.Fire && collision.gameObject.tag != "Player")
+        {
+            weaponState = WeaponState.Retrun;
+        }
+
+
+    }
+
 
 
 }
