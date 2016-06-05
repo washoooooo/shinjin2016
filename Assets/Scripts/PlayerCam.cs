@@ -6,6 +6,9 @@ public class PlayerCam : MonoBehaviour {
     public Transform player;
     [SerializeField]
     public Rigidbody playerRigidbody;
+    [SerializeField]
+    public Weapon Weapon;  
+
 
     //カメラの回転の中心座標(プレイヤーとのオフセット)
     public Vector3 pivotOffset = new Vector3(0.0f, 1.0f, 0.0f);
@@ -67,6 +70,9 @@ public class PlayerCam : MonoBehaviour {
         smoothCamOffset = camOffset;
 
         defaultFOV = mainCam.fieldOfView;
+
+        // レティクルとの角度のオフセット
+
     }
 
 
@@ -187,18 +193,23 @@ public class PlayerCam : MonoBehaviour {
         float mh = Input.GetAxis("Mouse X");
         float mv = Input.GetAxis("Mouse Y");
 
-        if ((h != 0.0f || v != 0.0f) && (mh == 0.0f && mv == 0.0f))
+        if ((h != 0.0f || v != 0.0f) && (mh == 0.0f && mv == 0.0f) && !Input.GetMouseButton(0))
         {
+            if(Mathf.Abs(diffRotation.y % 90) < 10)
+            {
+                return;
+            }
+
             //Debug.Log(angleH);
             if (-345 <= diffRotation.y && diffRotation.y < -195)
             {
                 angleH += 0.8f;
             }
-            else if (-165 <= diffRotation.y && diffRotation.y < -15)
+            else if (-165 <= diffRotation.y && diffRotation.y < -100)
             {
                 angleH -= 0.8f;
             }
-            else if (15 <= diffRotation.y && diffRotation.y < 165)
+            else if (100 <= diffRotation.y && diffRotation.y < 165)
             {
                 angleH += 0.8f;
             }

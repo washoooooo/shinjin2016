@@ -6,7 +6,9 @@ public class PlayerControl : MonoBehaviour {
     // カメラ情報
     [SerializeField]
     GameObject playerCamera;
-
+    // 武器
+    [SerializeField]
+    Weapon weapon;
 
     // プレイヤー動作スピード
     public float speed = 6f;
@@ -70,10 +72,22 @@ public class PlayerControl : MonoBehaviour {
 
         // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(transform.position + _movement);
-        if (movement != Vector3.zero)
+        if (movement != Vector3.zero && Input.GetAxisRaw("Fire1") == 0)
         {
             playerRigidbody.transform.rotation = Quaternion.LookRotation(movement);
         }
+        // 射撃中はプレイヤーの向きはカメラの方向に固定
+        //else if(Input.GetAxisRaw("Fire1") == 1.0)
+        if(weapon.weaponState != Weapon.WeaponState.CanFire || Input.GetAxisRaw("Fire1") == 1.0)
+        {
+            Vector3 firedir = CameraForward;
+            firedir.y = 0f;
+            //firedir.z = 0f;
+            playerRigidbody.transform.rotation = Quaternion.LookRotation(firedir);
+            weapon.Shot();   
+        }
+        
+
         //playerRigidbody.velocity = Vector3.zero;
         //playerRigidbody.AddForce(movement.normalized * moveForce);
     }
