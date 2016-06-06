@@ -7,8 +7,8 @@ public class PlayerControl : MonoBehaviour {
     [SerializeField]
     GameObject playerCamera;
     // 武器
-    [SerializeField]
-    Weapon weapon;
+    //[SerializeField]
+    //Weapon weapon;
 
     // プレイヤー動作スピード
     public float speed = 6f;
@@ -17,6 +17,10 @@ public class PlayerControl : MonoBehaviour {
     public float jumpForce = 500;
     // プレイヤーの移動方向
     Vector3 movement;
+    // ファイアレート
+    public float fireRate = 1;
+    private float coolDownTime;
+    
     // Reference to the player's rigidbody.
     Rigidbody playerRigidbody;
 
@@ -76,15 +80,28 @@ public class PlayerControl : MonoBehaviour {
         {
             playerRigidbody.transform.rotation = Quaternion.LookRotation(movement);
         }
+        // 射撃処理
+        else if(coolDownTime == 0f && Input.GetAxisRaw("Fire1") == 1.0)
+        {
+            //弾を撃つ処理
+            
+            coolDownTime = fireRate;
+        }
         // 射撃中はプレイヤーの向きはカメラの方向に固定
         //else if(Input.GetAxisRaw("Fire1") == 1.0)
-        if(weapon.weaponState != Weapon.WeaponState.CanFire || Input.GetAxisRaw("Fire1") == 1.0)
+        if(coolDownTime > 0)
         {
+            Debug.Log(coolDownTime);
+            coolDownTime -= Time.deltaTime;
+            if(coolDownTime < 0f)
+            {
+                coolDownTime = 0f;
+            }
             Vector3 firedir = CameraForward;
             firedir.y = 0f;
             //firedir.z = 0f;
             playerRigidbody.transform.rotation = Quaternion.LookRotation(firedir);
-            weapon.Shot();   
+            //weapon.Shot();   
         }
         
 

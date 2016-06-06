@@ -6,8 +6,8 @@ public class PlayerCam : MonoBehaviour {
     public Transform player;
     [SerializeField]
     public Rigidbody playerRigidbody;
-    [SerializeField]
-    public Weapon Weapon;  
+    //[SerializeField]
+    //public Weapon Weapon;  
 
 
     //カメラの回転の中心座標(プレイヤーとのオフセット)
