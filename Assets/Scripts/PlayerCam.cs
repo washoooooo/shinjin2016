@@ -41,8 +41,7 @@ public class PlayerCam : MonoBehaviour {
     [SerializeField]
     private Transform cam;
 
-    [SerializeField]
-    private Camera mainCam;
+    
 
     // カメラのプレイヤーからの相対位置
     private Vector3 relCameraPos;
@@ -69,7 +68,7 @@ public class PlayerCam : MonoBehaviour {
         smoothPivotOffset = pivotOffset;
         smoothCamOffset = camOffset;
 
-        defaultFOV = mainCam.fieldOfView;
+        defaultFOV = Camera.main.fieldOfView;
 
         // レティクルとの角度のオフセット
 
@@ -83,7 +82,7 @@ public class PlayerCam : MonoBehaviour {
         angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1) * verticalAimingSpeed * Time.deltaTime;
 
         //angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -0.5f, 0.5f) * horizontalAimingSpeed * Time.deltaTime;
-        diffRotation = player.rotation.eulerAngles - mainCam.transform.rotation.eulerAngles;
+        diffRotation = player.rotation.eulerAngles - Camera.main.transform.rotation.eulerAngles;
 
         
 
@@ -107,7 +106,7 @@ public class PlayerCam : MonoBehaviour {
         targetFOV = defaultFOV;
 
         // カメラ画角変更の際のスムージング
-        mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, targetFOV, Time.deltaTime);
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, targetFOV, Time.deltaTime);
 
 
         // オブジェクトとの接触判定
